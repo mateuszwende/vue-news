@@ -10,8 +10,8 @@ export const fetchNews = async (params) => {
 
   const { response } = res.data;
 
-  return response.results;
+  return response;
 };
 
-export const fetchNewsByCategory = async (category) =>
-  await fetchNews({ section: category || categories.join("|") });
+export const fetchNewsByCategory = async (category, page = 1) =>
+  await fetchNews({ section: category || categories.join("|"), page });

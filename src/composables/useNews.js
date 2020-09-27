@@ -4,19 +4,26 @@ import { getList, saveItem, removeItem } from "@/utils/localstorage";
 
 const news = ref([]);
 const savedNews = ref([]);
+const pagination = ref({
+  pages: 0,
+  currentPage: 0
+});
 
 export function useNews() {
   const loading = ref(false);
   const error = ref(null);
 
-  const getNewsByCategory = async (category) => {
+  const getNewsByCategory = async (category, page) => {
     loading.value = true;
     try {
       getSavedNews();
 
-      const fetchedNews = await fetchNewsByCategory(category);
+      const res = await fetchNewsByCategory(category, page);
 
-      mapWithSaved(fetchedNews);
+      mapWithSaved(res.results);
+
+      pagination.value.pages = res.pages;
+      pagination.value.currentPage = res.currentPage;
 
       error.value = null;
     } catch (err) {
@@ -59,6 +66,7 @@ export function useNews() {
     getNewsByCategory,
     loading,
     error,
+    pagination: computed(() => pagination.value),
     savedNews: computed(() => savedNews.value),
     saveNewsItem,
     unsaveNewsItem,

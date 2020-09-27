@@ -2,6 +2,7 @@
   <button
     class="btn"
     :class="[`btn-${type}`, active ? 'active' : '']"
+    :disabled="disabled"
     @click="$emit('click')"
   >
     <slot></slot>
@@ -32,15 +33,18 @@ export default {
   border: 0;
   border-radius: 0.2rem;
   transition: all 0.1s ease-out;
-  cursor: pointer;
   outline-width: 0;
+
+  &:not(:disabled) {
+    cursor: pointer;
+  }
 }
 
 .btn-primary {
   background: $primary-color;
   color: #fff;
 
-  &:hover,
+  &:hover:not(:disabled),
   &:active,
   &.active {
     background: darken($primary-color, 15%);
@@ -51,7 +55,7 @@ export default {
   background: $accent-color;
   color: #fff;
 
-  &:hover,
+  &:hover:not(:disabled),
   &:active,
   &.active {
     background: darken($accent-color, 15%);
@@ -62,7 +66,7 @@ export default {
   background: $warn-color;
   color: #fff;
 
-  &:hover,
+  &:hover:not(:disabled),
   &:active,
   &.active {
     background: darken($warn-color, 15%);
@@ -73,7 +77,7 @@ export default {
   background: $info-color;
   color: #000;
 
-  &:hover,
+  &:hover:not(:disabled),
   &:active,
   &.active {
     background: darken($info-color, 15%);
