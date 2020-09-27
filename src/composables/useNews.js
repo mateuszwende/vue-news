@@ -44,19 +44,25 @@ export function useNews() {
     savedNews.value = getList();
   };
 
+  const getSavedNewsByCategory = (category) => {
+    savedNews.value = category
+      ? getList().filter((newsItem) => newsItem.sectionId === category)
+      : getList();
+  };
+
   const saveNewsItem = (item) => {
     const isDuplicate = getList().some((newsItem) => newsItem.id === item.id);
     if (isDuplicate) return;
 
     saveItem({ ...item, isSaved: true });
-    savedNews.value = getList();
+    savedNews.value = [...savedNews.value, item];
 
     mapWithSaved(news.value);
   };
 
   const unsaveNewsItem = (id) => {
     removeItem(id);
-    savedNews.value = getList();
+    savedNews.value = savedNews.value.filter((newsItem) => newsItem.id !== id);
 
     mapWithSaved(news.value);
   };
@@ -68,8 +74,8 @@ export function useNews() {
     error,
     pagination: computed(() => pagination.value),
     savedNews: computed(() => savedNews.value),
+    getSavedNewsByCategory,
     saveNewsItem,
-    unsaveNewsItem,
-    getSavedNews
+    unsaveNewsItem
   };
 }

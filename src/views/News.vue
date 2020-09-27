@@ -1,7 +1,11 @@
 <template>
   <h1>News</h1>
   <section class="utils">
-    <CategoryList :categories="categories" :active-category="category" />
+    <CategoryList
+      :categories="categories"
+      :active-category="category"
+      @choose-category="chooseCategory"
+    />
     <Button @click="getNewsByCategory(category)" :type="`info`">Refresh</Button>
   </section>
   <NewsList :news="news" :loading="loading" :error="error" />
@@ -51,6 +55,9 @@ export default {
   methods: {
     choosePage(page) {
       this.getNewsByCategory(this.category, page);
+    },
+    chooseCategory(category) {
+      this.$router.push(`/news/${category}`);
     }
   }
 };

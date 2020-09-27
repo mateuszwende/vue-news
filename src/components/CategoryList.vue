@@ -1,22 +1,23 @@
 <template>
   <section class="list">
-    <CategoryItem
+    <Button
       v-for="(category, index) in categories"
       :key="index"
-      :category="category"
+      :type="'accent'"
       :active="activeCategory === category"
-      :choose-category="chooseCategory"
-      @click="chooseCategory(category)"
-    />
+      @click="$emit('choose-category', category)"
+    >
+      {{ category }}
+    </Button>
   </section>
 </template>
 
 <script>
-import CategoryItem from "@/components/CategoryItem.vue";
+import Button from "@/components/Button.vue";
 
 export default {
   name: "CategoryList",
-  components: { CategoryItem },
+  components: { Button },
   props: {
     categories: {
       type: Array,
@@ -24,11 +25,6 @@ export default {
     },
     activeCategory: {
       type: String
-    }
-  },
-  methods: {
-    chooseCategory(category) {
-      this.$router.push(`/news/${category}`);
     }
   }
 };

@@ -14,10 +14,10 @@ const routes = [
     props: true
   },
   {
-    path: "/saved-news",
+    path: "/saved-news/:category?",
     name: "Saved News",
     component: SavedNews,
-    exact: true
+    props: true
   }
 ];
 
