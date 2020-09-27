@@ -1,0 +1,18 @@
+html {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  width: 100%;
+  margin: 0;
+  background: $primary-color;
+}
+
+html,
+button,
+label,
+input {
+  font-family: sans-serif;
+  font-size: 16px;
+}

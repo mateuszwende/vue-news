@@ -1,0 +1,27 @@
+@mixin text-overflow($max-lines-visible: 1, $type: ellipsis) {
+  display: block;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: $type;
+  overflow-wrap: anywhere;
+  -webkit-line-clamp: $max-lines-visible;
+}
+
+@mixin screen-min-xs() {
+  @media screen and (min-width: $breakpoint-xs) {
+    @content;
+  }
+}
+
+@mixin screen-min-sm() {
+  @media screen and (min-width: $breakpoint-sm) {
+    @content;
+  }
+}
+
+@mixin screen-min-md() {
+  @media screen and (min-width: $breakpoint-md) {
+    @content;
+  }
+}

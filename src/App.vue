@@ -1,30 +1,34 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
-  <router-view />
+  <Header />
+  <main>
+    <router-view />
+  </main>
 </template>
+
+<script>
+import Header from "@/components/Header";
+
+export default {
+  name: "App",
+  components: { Header }
+};
+</script>
 
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Abel, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: $primary-text-color;
 }
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+main {
+  display: grid;
+  grid-gap: 2rem;
+  max-width: $max-width;
+  width: calc(100% - 3rem);
+  padding: 3rem 1.5rem;
+  margin: 0 auto;
 }
 </style>
