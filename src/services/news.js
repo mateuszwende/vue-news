@@ -1,5 +1,4 @@
 import axios from "axios";
-import { categories } from "../constants";
 
 const url = "https://content.guardianapis.com/search";
 
@@ -12,6 +11,3 @@ export const fetchNews = async (params) => {
 
   return response;
 };
-
-export const fetchNewsByCategory = async (category, page = 1) =>
-  await fetchNews({ section: category || categories.join("|"), page });

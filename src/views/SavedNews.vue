@@ -24,11 +24,11 @@ export default {
   setup(props) {
     const { category } = toRefs(props);
 
-    const { savedNews, getSavedNewsByCategory } = useNews();
+    const { savedNews, getSavedNews } = useNews();
 
-    onMounted(() => getSavedNewsByCategory(category?.value));
+    onMounted(() => getSavedNews(category?.value));
 
-    watch(category, () => getSavedNewsByCategory(category?.value));
+    watch(category, () => getSavedNews(category?.value));
 
     return {
       savedNews,

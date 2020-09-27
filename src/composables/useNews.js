@@ -1,6 +1,7 @@
 import { ref, computed } from "vue";
-import { fetchNewsByCategory } from "@/services/news";
+import { fetchNews } from "@/services/news";
 import { getList, saveItem, removeItem } from "@/utils/localstorage";
+import { categories } from "@/constants";
 
 const news = ref([]);
 const savedNews = ref([]);
@@ -8,22 +9,29 @@ const pagination = ref({
   pages: 0,
   currentPage: 0
 });
+const searchQuery = ref("");
 
 export function useNews() {
   const loading = ref(false);
   const error = ref(null);
 
-  const getNewsByCategory = async (category, page) => {
+  const getNews = async ({ category, q = searchQuery.value, page = 1 }) => {
     loading.value = true;
     try {
       getSavedNews();
 
-      const res = await fetchNewsByCategory(category, page);
+      const res = await fetchNews({
+        section: category || categories.join("|"),
+        q,
+        page
+      });
 
       mapWithSaved(res.results);
 
       pagination.value.pages = res.pages;
       pagination.value.currentPage = res.currentPage;
+
+      searchQuery.value = q;
 
       error.value = null;
     } catch (err) {
@@ -40,11 +48,7 @@ export function useNews() {
     }));
   };
 
-  const getSavedNews = () => {
-    savedNews.value = getList();
-  };
-
-  const getSavedNewsByCategory = (category) => {
+  const getSavedNews = (category) => {
     savedNews.value = category
       ? getList().filter((newsItem) => newsItem.sectionId === category)
       : getList();
@@ -69,12 +73,13 @@ export function useNews() {
 
   return {
     news: computed(() => news.value),
-    getNewsByCategory,
+    getNews,
     loading,
     error,
     pagination: computed(() => pagination.value),
     savedNews: computed(() => savedNews.value),
-    getSavedNewsByCategory,
+    getSavedNews,
+    searchQuery,
     saveNewsItem,
     unsaveNewsItem
   };
