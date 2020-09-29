@@ -7,10 +7,10 @@
         :active-category="category"
         @choose-category="chooseCategory"
       />
-      <Search @on-change="search" :initialQuery="searchQuery" />
+      <Search @on-change="searchNews" :initial-value="search" />
     </div>
 
-    <Button @click="refresh" :type="`info`">Refresh</Button>
+    <Button @click="fetchNews" :type="`info`">Refresh</Button>
   </section>
   <NewsList :news="news" :loading="loading" :error="error" />
   <Pagination
@@ -35,57 +35,54 @@ export default {
   name: "News",
   components: { NewsList, CategoryList, Button, Pagination, Search },
   props: {
-    category: String
+    category: String,
+    search: String,
+    page: String
   },
   setup(props) {
-    const { category } = toRefs(props);
+    const { category, search, page } = toRefs(props);
 
-    const {
-      news,
-      getNews,
-      loading,
-      error,
-      pagination,
-      searchQuery
-    } = useNews();
+    const { news, getNews, loading, error, pagination } = useNews();
 
-    onMounted(() =>
-      news.value.length ? null : getNews({ category: category?.value, page: 1 })
-    );
+    const fetchNews = () =>
+      getNews({
+        category: category?.value,
+        search: search?.value,
+        page: page?.value
+      });
 
-    watch(category, () =>
-      getNews({ category: category?.value, page: 1, q: searchQuery.value })
-    );
+    onMounted(fetchNews);
+
+    watch([category, search, page], () => fetchNews());
 
     return {
       news,
-      getNews,
-      pagination,
-      searchQuery,
+      fetchNews,
       loading,
       error,
+      pagination,
       categories
     };
   },
   methods: {
     choosePage(page) {
-      this.getNews({
-        category: this.category?.value,
-        page,
-        q: this.searchQuery.value
-      });
+      this.goTo(this.category, { search: this.search, page });
     },
     chooseCategory(category) {
-      this.$router.push(`/news/${category}`);
+      this.goTo(category, { search: this.search, page: 1 });
     },
-    refresh() {
-      this.getNews({
-        category: this.category?.value,
-        q: this.searchQuery.value
+    searchNews(search) {
+      this.goTo(this.category, { search, page: 1 });
+    },
+    goTo(category, query) {
+      this.$router.push({
+        name: "news",
+        params: { ...(category && { category }) },
+        query: {
+          ...(query.search && { search: query.search }),
+          ...(query.page && { page: query.page })
+        }
       });
-    },
-    search(q) {
-      this.getNews({ category: this.category?.value, q });
     }
   }
 };

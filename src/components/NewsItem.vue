@@ -4,7 +4,7 @@
       <p class="">{{ item.sectionName }}</p>
     </div>
     <div class="content">
-      <a :href="item.webUrl" target="_blank">
+      <a :href="item.webUrl" :title="item.webTitle" target="_blank">
         <h3>{{ item.webTitle }}</h3>
       </a>
     </div>

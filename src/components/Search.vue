@@ -1,6 +1,10 @@
 <template>
   <section class="search">
-    <input v-model="searchQuery" placeholder="Search..." />
+    <input
+      :value="initialValue"
+      @input="fireOnChange"
+      placeholder="Search..."
+    />
   </section>
 </template>
 
@@ -10,23 +14,14 @@ import { debounce } from "@/utils/debounce";
 export default {
   name: "Search",
   props: {
-    initialQuery: {
-      type: String
-    }
-  },
-  data() {
-    return {
-      searchQuery: this.initialQuery || ""
-    };
-  },
-  watch: {
-    searchQuery: function() {
-      this.fireOnChange();
+    initialValue: {
+      type: String,
+      default: ""
     }
   },
   methods: {
-    fireOnChange: debounce(function() {
-      this.$emit("on-change", this.searchQuery);
+    fireOnChange: debounce(function(e) {
+      this.$emit("on-change", e.target.value);
     }, 500)
   }
 };

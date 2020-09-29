@@ -9,13 +9,17 @@ const routes = [
   },
   {
     path: "/news/:category?",
-    name: "News",
+    name: "news",
     component: News,
-    props: true
+    props: (route) => ({
+      category: route.params.category,
+      search: route.query.search,
+      page: route.query.page
+    })
   },
   {
     path: "/saved-news/:category?",
-    name: "Saved News",
+    name: "saved-news",
     component: SavedNews,
     props: true
   }
